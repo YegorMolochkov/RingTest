@@ -34,6 +34,14 @@ ext {
     // Dagger
     dagger_version = '2.11'
     glassfish_version = '10.0-b28'
+
+    // Rx
+    rx_kotlin_version = '2.1.0'
+    rx_java_version = '2.1.2'
+    rx_android_version = '2.0.2'
+
+    // Logging
+    timber_version = '4.5.1'
 }
 
 dependencies {
@@ -56,4 +64,12 @@ dependencies {
     implementation "org.glassfish:javax.annotation:$glassfish_version"
     implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
+
+    // Rx
+    implementation "io.reactivex.rxjava2:rxkotlin:$rx_kotlin_version"
+    implementation "io.reactivex.rxjava2:rxjava:$rx_java_version"
+    implementation "io.reactivex.rxjava2:rxandroid:$rx_android_version"
+
+    // Logging
+    implementation "com.jakewharton.timber:timber:$timber_version"
 }
