@@ -1,19 +1,35 @@
 package com.example.gosha.ringTest.screens.list.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import com.example.gosha.ringTest.data.reddit.FeedEntry
+import androidx.lifecycle.MediatorLiveData
+import com.example.gosha.ringTest.domain.feed.FetchFeedUseCase
+import com.example.gosha.ringTest.domain.feed.FetchFeedUseCase.FeedResult
 
-abstract class ListViewModel : ViewModel() {
+class ListViewModel(private val state: MediatorLiveData<State>,
+                    private val fetchMemesUseCase: FetchFeedUseCase) : AbstractListViewModel() {
 
-    sealed class State {
-        data class FeedLoaded(val feed: List<FeedEntry>) : State()
-        object ShowLoading : State()
-        object ShowContent : State()
-        object ShowError : State()
+    init {
+        state.addSource(fetchMemesUseCase.getLiveData(), ::onFetchMemesResult)
     }
 
-    abstract fun getState(): LiveData<State>
+    override fun onCleared() {
+        fetchMemesUseCase.cleanUp()
+    }
 
-    abstract fun fetchFeed()
+    override fun getState(): LiveData<State> = state
+
+    override fun fetchFeed() {
+        state.value = State.ShowLoading
+        fetchMemesUseCase.execute()
+    }
+
+    private fun onFetchMemesResult(result: FeedResult) {
+        when (result) {
+            is FeedResult.OnSuccess -> {
+                state.value = State.FeedLoaded(result.feed)
+                state.value = State.ShowContent
+            }
+            is FeedResult.OnError -> state.value = State.ShowError
+        }
+    }
 }
