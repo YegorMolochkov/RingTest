@@ -1,7 +1,7 @@
 package com.example.gosha.ringTest.screens.list.di
 
 import com.example.gosha.ringTest.core.di.annotations.ScreenScope
-import com.example.gosha.ringTest.screens.list.ListFragment
+import com.example.gosha.ringTest.screens.list.ui.ListFragment
 import com.example.gosha.ringTest.screens.main.di.MainActivityComponent
 import dagger.Component
 
